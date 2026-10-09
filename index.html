@@ -70,8 +70,6 @@ header{position:sticky;top:0;z-index:100;background:white;box-shadow:0 3px 15px 
 .flavors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .flavor-card{background:white;border:2px solid #e6e9df;border-radius:17px;padding:20px;display:flex;flex-direction:column;min-width:0;transition:.2s}
 .flavor-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 8px 22px #0000000d}
-
-/* FOTOS DAS PIZZAS PROMOCIONAIS */
 .product-photo{display:block;width:100%;height:190px;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#f1f1e9}
 .flavor-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
 .flavor-emoji{font-size:34px;flex-shrink:0}
@@ -115,6 +113,7 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
 .whatsapp-float{position:fixed;right:18px;bottom:18px;z-index:200;width:56px;height:56px;border-radius:50%;background:#25d366;color:white;display:grid;place-items:center;font-size:27px;box-shadow:0 5px 20px #0003}
 .toast{position:fixed;top:95px;right:15px;max-width:calc(100% - 30px);background:var(--dark-green);color:white;padding:13px 18px;border-radius:11px;box-shadow:0 5px 20px #0002;z-index:500;display:none;font-weight:800}
 .cart-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:50px;background:var(--yellow);color:var(--dark);font-size:11px;margin-left:3px}
+.half-note{background:#eaf7ed;color:var(--dark-green);border-radius:8px;padding:9px;font-size:12px;line-height:1.5}
 @media(max-width:850px){
  .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:45px}
  .hero p{margin-left:auto;margin-right:auto}
@@ -303,7 +302,7 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
     <p>Sua pizza favorita está a poucos passos de distância.</p>
   </div>
   <div class="how-grid">
-    <div class="how-card"><div class="how-icon">🍕</div><h3>1. Escolha sua pizza</h3><p>Confira os sabores e escolha inteira ou broto.</p></div>
+    <div class="how-card"><div class="how-icon">🍕</div><h3>1. Escolha sua pizza</h3><p>Escolha uma pizza inteira de um sabor ou combine dois sabores em uma pizza meio a meio.</p></div>
     <div class="how-card"><div class="how-icon">🛒</div><h3>2. Monte seu pedido</h3><p>Adicione pizzas e bebidas e confira o total.</p></div>
     <div class="how-card"><div class="how-icon">📲</div><h3>3. Envie pelo WhatsApp</h3><p>Informe seus dados e envie o pedido para nossa equipe.</p></div>
   </div>
@@ -401,27 +400,42 @@ function mostrarAviso(texto){
 }
 
 function chaveCarrinho(produto,tamanho,opcao){
-  return produto.id+"|"+(tamanho||"") +"|"+(opcao||"");
+  return produto.id+"|"+(tamanho||"")+"|"+(opcao||"");
 }
 
 function precoEscolhido(produto,tamanho){
-  if(tamanho==="Broto") return produto.broto;
+  if(tamanho==="Broto") return produto.broto ?? produto.inteira ?? produto.preco;
   return produto.inteira ?? produto.preco;
+}
+
+function permiteMeioAMeio(produto){
+  return ["Pizzas salgadas","Pizzas doces"].includes(produto.categoria)
+    && !produto.promocional
+    && produto.inteira !== undefined
+    && produto.broto !== undefined;
+}
+
+function calcularPrecoMeioAMeio(id1,id2,tamanho){
+  const p1=produtos.find(p=>p.id===id1);
+  const p2=produtos.find(p=>p.id===id2);
+  if(!p1||!p2)return 0;
+  return Math.max(precoEscolhido(p1,tamanho),precoEscolhido(p2,tamanho));
 }
 
 function montarCatalogo(){
   const busca=document.getElementById("busca").value.trim().toLocaleLowerCase("pt-BR");
   const ordem=document.getElementById("ordenacao").value;
+
   let lista=produtos.filter(p=>{
     const combinaCategoria=categoriaAtual==="Todos"||p.categoria===categoriaAtual;
     const texto=[p.nome,p.ingredientes,p.categoria,String(p.numero)].join(" ").toLocaleLowerCase("pt-BR");
     return combinaCategoria&&texto.includes(busca);
   });
 
-  if(ordem==="menor") lista.sort((a,b)=>(a.inteira??a.preco)-(b.inteira??b.preco));
-  if(ordem==="maior") lista.sort((a,b)=>(b.inteira??b.preco)-(a.inteira??a.preco));
-  if(ordem==="nome") lista.sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));
-  if(ordem==="numero") lista.sort((a,b)=>{
+  if(ordem==="menor")lista.sort((a,b)=>(a.inteira??a.preco)-(b.inteira??b.preco));
+  if(ordem==="maior")lista.sort((a,b)=>(b.inteira??b.preco)-(a.inteira??a.preco));
+  if(ordem==="nome")lista.sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));
+  if(ordem==="numero")lista.sort((a,b)=>{
     const catA=["Promoção","Pizzas doces","Bebidas"].includes(a.categoria)?1:0;
     const catB=["Promoção","Pizzas doces","Bebidas"].includes(b.categoria)?1:0;
     if(catA!==catB)return catA-catB;
@@ -429,8 +443,8 @@ function montarCatalogo(){
   });
 
   document.getElementById("result-count").textContent=lista.length+" produto(s) encontrado(s)";
-
   const container=document.getElementById("catalogo");
+
   if(!lista.length){
     container.innerHTML='<div class="no-results">Não encontramos esse item. Tente outro nome ou ingrediente.</div>';
     return;
@@ -442,18 +456,19 @@ function montarCatalogo(){
     const idTamanho="size-"+p.id;
     const idOpcao="option-"+p.id;
     const precoId="price-"+p.id;
+    const permiteMetades=permiteMeioAMeio(p);
+
+    const saboresMesmaCategoria=produtos.filter(s=>
+      permiteMeioAMeio(s)&&s.categoria===p.categoria
+    );
 
     return `
       <article class="flavor-card">
-        ${p.promocional && p.foto ? `
-          <img
-            class="product-photo"
-            src="${p.foto}"
+        ${p.promocional&&p.foto?`
+          <img class="product-photo" src="${p.foto}"
             alt="Foto ilustrativa da pizza promocional de ${p.nome}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        ` : ""}
+            loading="lazy" onerror="this.style.display='none'">
+        `:""}
         <div class="flavor-top">
           <div class="flavor-emoji">${p.emoji}</div>
           <div>
@@ -471,6 +486,24 @@ function montarCatalogo(){
               <option value="Broto">Broto — 4 pedaços</option>
             </select>
           `:""}
+          ${permiteMetades?`
+            <label for="tipo-${p.id}">Como deseja sua pizza?</label>
+            <select id="tipo-${p.id}" onchange="alternarMetades('${p.id}')">
+              <option value="inteira">Inteira de um sabor</option>
+              <option value="meio">Meio a meio — 2 sabores</option>
+            </select>
+            <div id="metades-${p.id}" style="display:none;gap:9px">
+              <label for="metade1-${p.id}">Primeira metade</label>
+              <select id="metade1-${p.id}" onchange="atualizarPrecoCartao('${p.id}')">
+                ${saboresMesmaCategoria.map(s=>`<option value="${s.id}" ${s.id===p.id?"selected":""}>${s.nome}</option>`).join("")}
+              </select>
+              <label for="metade2-${p.id}">Segunda metade</label>
+              <select id="metade2-${p.id}" onchange="atualizarPrecoCartao('${p.id}')">
+                ${saboresMesmaCategoria.map(s=>`<option value="${s.id}" ${s.id!==p.id?"selected":""}>${s.nome}</option>`).join("")}
+              </select>
+              <div class="half-note">O valor será o preço integral do sabor mais caro.</div>
+            </div>
+          `:""}
           ${p.opcoes?`
             <label for="${idOpcao}">Escolha a opção</label>
             <select id="${idOpcao}">
@@ -486,17 +519,83 @@ function montarCatalogo(){
   }).join("");
 }
 
+function alternarMetades(id){
+  const tipo=document.getElementById("tipo-"+id);
+  const area=document.getElementById("metades-"+id);
+  if(!tipo||!area)return;
+  area.style.display=tipo.value==="meio"?"grid":"none";
+  atualizarPrecoCartao(id);
+}
+
 function atualizarPrecoCartao(id){
   const p=produtos.find(item=>item.id===id);
   if(!p)return;
-  const tamanho=document.getElementById("size-"+id).value;
-  document.getElementById("price-"+id).textContent=dinheiro(precoEscolhido(p,tamanho));
+
+  const tamanho=document.getElementById("size-"+id)?.value||"Inteira";
+  const tipo=document.getElementById("tipo-"+id);
+  const precoElemento=document.getElementById("price-"+id);
+  if(!precoElemento)return;
+
+  if(tipo&&tipo.value==="meio"){
+    const id1=document.getElementById("metade1-"+id)?.value;
+    const id2=document.getElementById("metade2-"+id)?.value;
+
+    if(id1&&id2){
+      precoElemento.textContent=dinheiro(calcularPrecoMeioAMeio(id1,id2,tamanho));
+      return;
+    }
+  }
+
+  precoElemento.textContent=dinheiro(precoEscolhido(p,tamanho));
 }
 
 function adicionarProduto(id){
   const p=produtos.find(item=>item.id===id);
   if(!p)return;
-  const tamanho=p.broto!==undefined?document.getElementById("size-"+id).value:"";
+
+  const tamanho=p.broto!==undefined?(document.getElementById("size-"+id)?.value||"Inteira"):"";
+  const tipo=document.getElementById("tipo-"+id);
+
+  if(tipo&&tipo.value==="meio"){
+    const id1=document.getElementById("metade1-"+id)?.value;
+    const id2=document.getElementById("metade2-"+id)?.value;
+
+    if(!id1||!id2){
+      mostrarAviso("Escolha os dois sabores da pizza.");
+      return;
+    }
+
+    if(id1===id2){
+      mostrarAviso("Escolha dois sabores diferentes.");
+      return;
+    }
+
+    const sabor1=produtos.find(s=>s.id===id1);
+    const sabor2=produtos.find(s=>s.id===id2);
+    if(!sabor1||!sabor2)return;
+
+    const preco=calcularPrecoMeioAMeio(id1,id2,tamanho);
+    const opcao="1/2 "+sabor1.nome+" + 1/2 "+sabor2.nome;
+    const chave="meio|"+tamanho+"|"+id1+"|"+id2;
+
+    if(!carrinho[chave]){
+      carrinho[chave]={
+        id:chave,
+        nome:"Pizza meio a meio",
+        categoria:p.categoria,
+        tamanho,
+        opcao,
+        preco,
+        quantidade:0
+      };
+    }
+
+    carrinho[chave].quantidade++;
+    atualizarCarrinho();
+    mostrarAviso("Pizza meio a meio adicionada ao carrinho!");
+    return;
+  }
+
   const opcao=p.opcoes?document.getElementById("option-"+id).value:"";
   const preco=precoEscolhido(p,tamanho);
   const key=chaveCarrinho(p,tamanho,opcao);
@@ -504,6 +603,7 @@ function adicionarProduto(id){
   if(!carrinho[key]){
     carrinho[key]={id:p.id,nome:p.nome,categoria:p.categoria,tamanho,opcao,preco,quantidade:0};
   }
+
   carrinho[key].quantidade++;
   atualizarCarrinho();
   mostrarAviso(p.nome+" adicionado ao carrinho!");
@@ -598,6 +698,7 @@ atualizarTroco();
 
 document.getElementById("checkout-form").addEventListener("submit",event=>{
   event.preventDefault();
+
   const itens=Object.values(carrinho);
   if(!itens.length){
     alert("Seu carrinho está vazio! Escolha produtos antes de finalizar.");
@@ -617,6 +718,7 @@ document.getElementById("checkout-form").addEventListener("submit",event=>{
     alert("Preencha seu nome e a forma de pagamento.");
     return;
   }
+
   if(tipoEntrega==="Entrega"&&!enderecoTexto){
     alert("Informe o endereço de entrega.");
     endereco.focus();
@@ -639,10 +741,12 @@ document.getElementById("checkout-form").addEventListener("submit",event=>{
   if(formaPagamento==="Dinheiro"&&troco)mensagem+="*Troco para:* "+troco+"\n";
   mensagem+="\n*ITENS DO PEDIDO*\n"+linhas.join("\n")+"\n\n";
   mensagem+="*Total dos produtos: "+dinheiro(total)+"*\n";
+
   if(tipoEntrega==="Entrega"){
     mensagem+="*Endereço:* "+enderecoTexto+"\n";
     mensagem+="*Taxa de entrega:* confirmar com a pizzaria\n";
   }
+
   if(observacoes)mensagem+="\n*Observações:* "+observacoes+"\n";
   mensagem+="\nPor favor, confirmem a taxa de entrega (se houver) e o valor final do pedido.";
 
