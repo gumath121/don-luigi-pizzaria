@@ -13,14 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --green:#168b45;
-  --dark-green:#07572b;
-  --red:#e73535;
-  --yellow:#ffca3a;
-  --cream:#fff9eb;
-  --dark:#17251a;
-}
+:root{--green:#168b45;--dark-green:#07572b;--red:#e73535;--yellow:#ffca3a;--cream:#fff9eb;--dark:#17251a}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:100px}
 body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark)}
@@ -85,6 +78,16 @@ header{position:sticky;top:0;z-index:100;background:white;box-shadow:0 3px 15px 
 .small-btn{border:0;border-radius:9px;padding:10px 12px;background:var(--green);color:white;font-weight:900}
 .no-results{grid-column:1/-1;text-align:center;padding:35px;background:white;border-radius:14px;color:#647064}
 .menu-cta{text-align:center;margin-top:30px}
+
+/* MONTADOR DE PIZZA */
+.pizza-builder{max-width:720px;margin:0 auto 38px;padding:25px;background:#fff;border:2px solid #dce5da;border-radius:18px;box-shadow:0 6px 0 #07572b18;display:grid;gap:11px}
+.pizza-builder h3{font-size:25px;font-weight:900;color:var(--dark-green)}
+.pizza-builder>p{color:#647064;margin-bottom:5px;line-height:1.6}
+.pizza-builder label{font-size:13px;font-weight:900;margin-top:4px}
+.pizza-builder select{width:100%;padding:13px;border:1px solid #d8dfd6;border-radius:10px;background:#fff}
+.pizza-builder .btn{width:100%;margin-top:7px}
+.builder-price{background:#eaf7ed;color:var(--dark-green);border-radius:10px;padding:13px;font-size:14px;font-weight:900;line-height:1.6}
+.builder-hint{font-size:12px;color:#647064;line-height:1.5}
 .cart-section{background:white;border-radius:20px;padding:25px;border:2px solid #e6e9df}
 .cart-empty{text-align:center;padding:25px 10px;color:#647064}
 .cart-item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:15px 0;border-bottom:1px solid #e6e9df}
@@ -113,7 +116,6 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
 .whatsapp-float{position:fixed;right:18px;bottom:18px;z-index:200;width:56px;height:56px;border-radius:50%;background:#25d366;color:white;display:grid;place-items:center;font-size:27px;box-shadow:0 5px 20px #0003}
 .toast{position:fixed;top:95px;right:15px;max-width:calc(100% - 30px);background:var(--dark-green);color:white;padding:13px 18px;border-radius:11px;box-shadow:0 5px 20px #0002;z-index:500;display:none;font-weight:800}
 .cart-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:50px;background:var(--yellow);color:var(--dark);font-size:11px;margin-left:3px}
-.half-note{background:#eaf7ed;color:var(--dark-green);border-radius:8px;padding:9px;font-size:12px;line-height:1.5}
 @media(max-width:850px){
  .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:45px}
  .hero p{margin-left:auto;margin-right:auto}
@@ -144,6 +146,7 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
  .flavors{grid-template-columns:1fr}
  .flavor-card{padding:18px}
  .product-photo{height:210px}
+ .pizza-builder{padding:18px}
  .cart-section{padding:15px}
  .cart-item{grid-template-columns:minmax(0,1fr) auto}
  .cart-item-total{grid-column:1/-1;text-align:right}
@@ -207,7 +210,37 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
   <div class="section-heading">
     <span class="mini">Escolha sua próxima fase</span>
     <h2>Nosso cardápio 🍕</h2>
-    <p>Escolha o sabor, selecione o tamanho e adicione ao carrinho.</p>
+    <p>Monte sua pizza escolhendo um ou dois sabores, ou adicione produtos individualmente pelo cardápio.</p>
+  </div>
+
+  <div class="pizza-builder" id="montador">
+    <h3>🍕 Monte sua pizza</h3>
+    <p>Escolha a quantidade de sabores, o tamanho e depois selecione sua pizza.</p>
+
+    <label for="quantidade-sabores">1. Quantos sabores você quer?</label>
+    <select id="quantidade-sabores" onchange="atualizarMontador()">
+      <option value="1">1 sabor</option>
+      <option value="2">2 sabores — meio a meio</option>
+    </select>
+
+    <label for="tamanho-montador">2. Escolha o tamanho</label>
+    <select id="tamanho-montador" onchange="atualizarPrecoMontador()">
+      <option value="Inteira">Inteira — 8 pedaços</option>
+      <option value="Broto">Broto — 4 pedaços</option>
+    </select>
+
+    <label for="sabor-montador-1">3. Escolha o primeiro sabor</label>
+    <select id="sabor-montador-1" onchange="atualizarPrecoMontador()"></select>
+
+    <div id="segundo-sabor-area" style="display:none">
+      <label for="sabor-montador-2">4. Escolha o segundo sabor</label>
+      <select id="sabor-montador-2" onchange="atualizarPrecoMontador()"></select>
+    </div>
+
+    <div id="preco-montador" class="builder-price">Selecione os sabores para consultar o preço.</div>
+    <p class="builder-hint">Para pizzas de dois sabores, o preço será o valor integral do sabor mais caro. Você pode combinar sabores salgados entre si ou sabores doces entre si.</p>
+
+    <button type="button" class="btn btn-green" onclick="adicionarPizzaMontada()">🛒 Adicionar pizza ao carrinho</button>
   </div>
 
   <div class="menu-tools">
@@ -302,8 +335,8 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
     <p>Sua pizza favorita está a poucos passos de distância.</p>
   </div>
   <div class="how-grid">
-    <div class="how-card"><div class="how-icon">🍕</div><h3>1. Escolha sua pizza</h3><p>Escolha uma pizza inteira de um sabor ou combine dois sabores em uma pizza meio a meio.</p></div>
-    <div class="how-card"><div class="how-icon">🛒</div><h3>2. Monte seu pedido</h3><p>Adicione pizzas e bebidas e confira o total.</p></div>
+    <div class="how-card"><div class="how-icon">🍕</div><h3>1. Monte sua pizza</h3><p>Escolha uma pizza de um sabor ou combine dois sabores na mesma pizza.</p></div>
+    <div class="how-card"><div class="how-icon">🛒</div><h3>2. Confira o pedido</h3><p>Adicione pizzas e bebidas e confira o total no carrinho.</p></div>
     <div class="how-card"><div class="how-icon">📲</div><h3>3. Envie pelo WhatsApp</h3><p>Informe seus dados e envie o pedido para nossa equipe.</p></div>
   </div>
 </section>
@@ -408,20 +441,145 @@ function precoEscolhido(produto,tamanho){
   return produto.inteira ?? produto.preco;
 }
 
-function permiteMeioAMeio(produto){
-  return ["Pizzas salgadas","Pizzas doces"].includes(produto.categoria)
-    && !produto.promocional
-    && produto.inteira !== undefined
-    && produto.broto !== undefined;
+/* MONTA A LISTA DE SABORES DISPONÍVEIS */
+function preencherSaboresMontador(){
+  const sabor1=document.getElementById("sabor-montador-1");
+  const sabor2=document.getElementById("sabor-montador-2");
+
+  const salgadas=produtos.filter(p =>
+    p.categoria==="Pizzas salgadas" && p.broto!==undefined && !p.promocional
+  );
+  const doces=produtos.filter(p =>
+    p.categoria==="Pizzas doces" && p.broto!==undefined && !p.promocional
+  );
+
+  function opcoes(lista){
+    return lista.map(p=>`<option value="${p.id}">${p.nome}</option>`).join("");
+  }
+
+  const html=
+    `<optgroup label="Pizzas salgadas">${opcoes(salgadas)}</optgroup>`+
+    `<optgroup label="Pizzas doces">${opcoes(doces)}</optgroup>`;
+
+  sabor1.innerHTML=html;
+  sabor2.innerHTML=html;
+
+  atualizarMontador();
 }
 
-function calcularPrecoMeioAMeio(id1,id2,tamanho){
+function atualizarMontador(){
+  const quantidade=document.getElementById("quantidade-sabores").value;
+  const tamanho=document.getElementById("tamanho-montador");
+  const areaSegundo=document.getElementById("segundo-sabor-area");
+
+  areaSegundo.style.display=quantidade==="2"?"grid":"none";
+
+  /* Promoções não fazem parte do montador; sabores regulares permitem broto. */
+  tamanho.querySelector('option[value="Broto"]').disabled=false;
+
+  atualizarPrecoMontador();
+}
+
+function atualizarPrecoMontador(){
+  const quantidade=document.getElementById("quantidade-sabores").value;
+  const tamanho=document.getElementById("tamanho-montador").value;
+  const id1=document.getElementById("sabor-montador-1").value;
+  const id2=document.getElementById("sabor-montador-2").value;
+  const resultado=document.getElementById("preco-montador");
+
   const p1=produtos.find(p=>p.id===id1);
   const p2=produtos.find(p=>p.id===id2);
-  if(!p1||!p2)return 0;
-  return Math.max(precoEscolhido(p1,tamanho),precoEscolhido(p2,tamanho));
+
+  if(!p1){
+    resultado.textContent="Selecione o primeiro sabor.";
+    return;
+  }
+
+  if(quantidade==="1"){
+    resultado.textContent="Preço da pizza de "+p1.nome+": "+dinheiro(precoEscolhido(p1,tamanho));
+    return;
+  }
+
+  if(!p2){
+    resultado.textContent="Selecione o segundo sabor.";
+    return;
+  }
+
+  if(p1.categoria!==p2.categoria){
+    resultado.textContent="Escolha dois sabores salgados ou dois sabores doces.";
+    return;
+  }
+
+  if(p1.id===p2.id){
+    resultado.textContent="Escolha dois sabores diferentes.";
+    return;
+  }
+
+  const preco=Math.max(precoEscolhido(p1,tamanho),precoEscolhido(p2,tamanho));
+  resultado.textContent="Pizza meio a meio: "+dinheiro(preco)+" — preço integral do sabor mais caro.";
 }
 
+function adicionarPizzaMontada(){
+  const quantidade=document.getElementById("quantidade-sabores").value;
+  const tamanho=document.getElementById("tamanho-montador").value;
+  const id1=document.getElementById("sabor-montador-1").value;
+  const id2=document.getElementById("sabor-montador-2").value;
+
+  const p1=produtos.find(p=>p.id===id1);
+  const p2=produtos.find(p=>p.id===id2);
+
+  if(!p1){
+    mostrarAviso("Escolha o sabor da pizza.");
+    return;
+  }
+
+  let nome,opcao,preco,chave;
+
+  if(quantidade==="1"){
+    nome="Pizza de "+p1.nome;
+    opcao="Sabor: "+p1.nome;
+    preco=precoEscolhido(p1,tamanho);
+    chave="montada|1|"+tamanho+"|"+p1.id;
+  }else{
+    if(!p2){
+      mostrarAviso("Escolha os dois sabores.");
+      return;
+    }
+
+    if(p1.categoria!==p2.categoria){
+      mostrarAviso("Combine duas pizzas salgadas ou duas pizzas doces.");
+      return;
+    }
+
+    if(p1.id===p2.id){
+      mostrarAviso("Escolha dois sabores diferentes.");
+      return;
+    }
+
+    nome="Pizza meio a meio";
+    opcao="1/2 "+p1.nome+" + 1/2 "+p2.nome;
+    preco=Math.max(precoEscolhido(p1,tamanho),precoEscolhido(p2,tamanho));
+    chave="montada|2|"+tamanho+"|"+p1.id+"|"+p2.id;
+  }
+
+  if(!carrinho[chave]){
+    carrinho[chave]={
+      id:chave,
+      nome,
+      categoria:p1.categoria,
+      tamanho,
+      opcao,
+      preco,
+      quantidade:0
+    };
+  }
+
+  carrinho[chave].quantidade++;
+  atualizarCarrinho();
+  mostrarAviso("Pizza adicionada ao carrinho!");
+}
+
+/* CATÁLOGO: OS CARDS PERMITEM ADICIONAR PIZZAS DE UM SABOR, PROMOÇÕES E BEBIDAS */
 function montarCatalogo(){
   const busca=document.getElementById("busca").value.trim().toLocaleLowerCase("pt-BR");
   const ordem=document.getElementById("ordenacao").value;
@@ -456,11 +614,6 @@ function montarCatalogo(){
     const idTamanho="size-"+p.id;
     const idOpcao="option-"+p.id;
     const precoId="price-"+p.id;
-    const permiteMetades=permiteMeioAMeio(p);
-
-    const saboresMesmaCategoria=produtos.filter(s=>
-      permiteMeioAMeio(s)&&s.categoria===p.categoria
-    );
 
     return `
       <article class="flavor-card">
@@ -480,29 +633,11 @@ function montarCatalogo(){
         <p>${p.ingredientes}</p>
         <div class="card-controls">
           ${tamanhos?`
-            <label for="${idTamanho}">Escolha o tamanho</label>
-            <select id="${idTamanho}" onchange="atualizarPrecoCartao('${p.id}')">
+            <label for="${idTamanho}">Tamanho</label>
+            <select id="${idTamanho}" onchange="atualizarPrecoCard('${p.id}')">
               <option value="Inteira">Inteira — 8 pedaços</option>
               <option value="Broto">Broto — 4 pedaços</option>
             </select>
-          `:""}
-          ${permiteMetades?`
-            <label for="tipo-${p.id}">Como deseja sua pizza?</label>
-            <select id="tipo-${p.id}" onchange="alternarMetades('${p.id}')">
-              <option value="inteira">Inteira de um sabor</option>
-              <option value="meio">Meio a meio — 2 sabores</option>
-            </select>
-            <div id="metades-${p.id}" style="display:none;gap:9px">
-              <label for="metade1-${p.id}">Primeira metade</label>
-              <select id="metade1-${p.id}" onchange="atualizarPrecoCartao('${p.id}')">
-                ${saboresMesmaCategoria.map(s=>`<option value="${s.id}" ${s.id===p.id?"selected":""}>${s.nome}</option>`).join("")}
-              </select>
-              <label for="metade2-${p.id}">Segunda metade</label>
-              <select id="metade2-${p.id}" onchange="atualizarPrecoCartao('${p.id}')">
-                ${saboresMesmaCategoria.map(s=>`<option value="${s.id}" ${s.id!==p.id?"selected":""}>${s.nome}</option>`).join("")}
-              </select>
-              <div class="half-note">O valor será o preço integral do sabor mais caro.</div>
-            </div>
           `:""}
           ${p.opcoes?`
             <label for="${idOpcao}">Escolha a opção</label>
@@ -519,34 +654,12 @@ function montarCatalogo(){
   }).join("");
 }
 
-function alternarMetades(id){
-  const tipo=document.getElementById("tipo-"+id);
-  const area=document.getElementById("metades-"+id);
-  if(!tipo||!area)return;
-  area.style.display=tipo.value==="meio"?"grid":"none";
-  atualizarPrecoCartao(id);
-}
-
-function atualizarPrecoCartao(id){
+function atualizarPrecoCard(id){
   const p=produtos.find(item=>item.id===id);
   if(!p)return;
-
   const tamanho=document.getElementById("size-"+id)?.value||"Inteira";
-  const tipo=document.getElementById("tipo-"+id);
-  const precoElemento=document.getElementById("price-"+id);
-  if(!precoElemento)return;
-
-  if(tipo&&tipo.value==="meio"){
-    const id1=document.getElementById("metade1-"+id)?.value;
-    const id2=document.getElementById("metade2-"+id)?.value;
-
-    if(id1&&id2){
-      precoElemento.textContent=dinheiro(calcularPrecoMeioAMeio(id1,id2,tamanho));
-      return;
-    }
-  }
-
-  precoElemento.textContent=dinheiro(precoEscolhido(p,tamanho));
+  const elemento=document.getElementById("price-"+id);
+  if(elemento)elemento.textContent=dinheiro(precoEscolhido(p,tamanho));
 }
 
 function adicionarProduto(id){
@@ -554,48 +667,6 @@ function adicionarProduto(id){
   if(!p)return;
 
   const tamanho=p.broto!==undefined?(document.getElementById("size-"+id)?.value||"Inteira"):"";
-  const tipo=document.getElementById("tipo-"+id);
-
-  if(tipo&&tipo.value==="meio"){
-    const id1=document.getElementById("metade1-"+id)?.value;
-    const id2=document.getElementById("metade2-"+id)?.value;
-
-    if(!id1||!id2){
-      mostrarAviso("Escolha os dois sabores da pizza.");
-      return;
-    }
-
-    if(id1===id2){
-      mostrarAviso("Escolha dois sabores diferentes.");
-      return;
-    }
-
-    const sabor1=produtos.find(s=>s.id===id1);
-    const sabor2=produtos.find(s=>s.id===id2);
-    if(!sabor1||!sabor2)return;
-
-    const preco=calcularPrecoMeioAMeio(id1,id2,tamanho);
-    const opcao="1/2 "+sabor1.nome+" + 1/2 "+sabor2.nome;
-    const chave="meio|"+tamanho+"|"+id1+"|"+id2;
-
-    if(!carrinho[chave]){
-      carrinho[chave]={
-        id:chave,
-        nome:"Pizza meio a meio",
-        categoria:p.categoria,
-        tamanho,
-        opcao,
-        preco,
-        quantidade:0
-      };
-    }
-
-    carrinho[chave].quantidade++;
-    atualizarCarrinho();
-    mostrarAviso("Pizza meio a meio adicionada ao carrinho!");
-    return;
-  }
-
   const opcao=p.opcoes?document.getElementById("option-"+id).value:"";
   const preco=precoEscolhido(p,tamanho);
   const key=chaveCarrinho(p,tamanho,opcao);
@@ -688,9 +759,11 @@ function atualizarEndereco(){
   endereco.required=precisaEndereco;
   campoEndereco.style.display=precisaEndereco?"flex":"none";
 }
+
 function atualizarTroco(){
   trocoField.style.display=pagamento.value==="Dinheiro"?"flex":"none";
 }
+
 entrega.addEventListener("change",atualizarEndereco);
 pagamento.addEventListener("change",atualizarTroco);
 atualizarEndereco();
@@ -755,6 +828,7 @@ document.getElementById("checkout-form").addEventListener("submit",event=>{
   if(!novaAba)window.location.href=link;
 });
 
+preencherSaboresMontador();
 montarCatalogo();
 atualizarCarrinho();
 </script>
