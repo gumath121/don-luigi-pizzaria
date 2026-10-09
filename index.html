@@ -80,7 +80,7 @@ header {
   gap: 15px;
 }
 
-/* LOGOTIPO OFICIAL */
+/* LOGOTIPO DO CABEÇALHO */
 .brand {
   display: flex;
   align-items: center;
@@ -138,23 +138,66 @@ header {
   box-shadow: 0 4px 0 #a91f25;
 }
 
+/* FAIXA PRINCIPAL COM IMAGEM DE FUNDO */
 .hero {
-  background:
-    radial-gradient(circle at 85% 20%, #ffca3a25 0 12%, transparent 12.5%),
-    linear-gradient(125deg, #07572b, #168b45 65%, #0a6835);
+  position: relative;
+  isolation: isolate;
   color: white;
   overflow: hidden;
+  background: linear-gradient(125deg, #07572b, #168b45 65%, #0a6835);
 }
 
+/* A imagem fica atrás do conteúdo, com uma camada verde transparente */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      125deg,
+      rgba(7, 87, 43, 0.78),
+      rgba(22, 139, 69, 0.72) 65%,
+      rgba(10, 104, 53, 0.82)
+    ),
+    url("background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* CONTEÚDO DA FAIXA PRINCIPAL */
 .hero-inner {
   max-width: 1200px;
   min-height: 430px;
-  padding: 58px 24px;
+  padding: 48px 24px;
   margin: auto;
   display: grid;
   grid-template-columns: 1.2fr .8fr;
   align-items: center;
   gap: 35px;
+}
+
+/* LOGOTIPO EM DESTAQUE ACIMA DO TÍTULO */
+.hero-logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.hero-logo img {
+  display: block;
+  width: 250px;
+  height: 190px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+  transition: transform .3s ease, filter .3s ease;
+}
+
+.hero-logo img:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45));
 }
 
 .eyebrow {
@@ -699,7 +742,6 @@ footer {
   padding: 32px 20px;
 }
 
-/* LOGOTIPO NO RODAPÉ */
 .footer-logo {
   display: block;
   width: 190px;
@@ -763,7 +805,17 @@ footer p {
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
-    padding-top: 45px;
+    padding-top: 38px;
+  }
+
+  .hero-logo {
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .hero-logo img {
+    width: 230px;
+    height: 165px;
   }
 
   .hero p {
@@ -827,8 +879,17 @@ footer p {
   }
 
   .hero-inner {
-    padding: 40px 18px;
+    padding: 32px 18px 40px;
     gap: 10px;
+  }
+
+  .hero-logo {
+    margin-bottom: 14px;
+  }
+
+  .hero-logo img {
+    width: 190px;
+    height: 140px;
   }
 
   .hero h1 {
@@ -947,9 +1008,17 @@ footer p {
 <main>
 <section class="hero">
   <div class="hero-inner">
-    <div>
+    <div class="hero-content">
+
+      <!-- LOGOTIPO GRANDE ACIMA DO TÍTULO -->
+      <div class="hero-logo">
+        <img src="logo.png" alt="Logotipo Don Luigi Pizzaria">
+      </div>
+
       <span class="eyebrow">⭐ UMA FASE CHEIA DE SABOR</span>
+
       <h1>A próxima fase da sua fome é <span>uma pizza!</span></h1>
+
       <p>Sabores incríveis, ingredientes caprichados e aquela pizza que merece virar sua próxima aventura. Escolha a sua favorita!</p>
 
       <div class="hero-actions">
