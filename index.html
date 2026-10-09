@@ -70,6 +70,9 @@ header{position:sticky;top:0;z-index:100;background:white;box-shadow:0 3px 15px 
 .flavors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .flavor-card{background:white;border:2px solid #e6e9df;border-radius:17px;padding:20px;display:flex;flex-direction:column;min-width:0;transition:.2s}
 .flavor-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 8px 22px #0000000d}
+
+/* FOTOS DAS PIZZAS PROMOCIONAIS */
+.product-photo{display:block;width:100%;height:190px;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#f1f1e9}
 .flavor-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
 .flavor-emoji{font-size:34px;flex-shrink:0}
 .flavor-card h3{font-size:18px;font-weight:900;line-height:1.3}
@@ -141,6 +144,7 @@ footer p{color:#c9d8cb;margin-top:8px;font-size:13px}
  .category-list{justify-content:flex-start}
  .flavors{grid-template-columns:1fr}
  .flavor-card{padding:18px}
+ .product-photo{height:210px}
  .cart-section{padding:15px}
  .cart-item{grid-template-columns:minmax(0,1fr) auto}
  .cart-item-total{grid-column:1/-1;text-align:right}
@@ -359,10 +363,10 @@ const produtos = [
   {id:"s37",numero:37,nome:"4 Queijos",categoria:"Pizzas salgadas",emoji:"🧀",ingredientes:"Molho especial, mussarela, catupiry, queijo provolone, queijo gorgonzola, orégano e azeitonas.",inteira:46,broto:27.60},
   {id:"s38",numero:38,nome:"Vegetariana",categoria:"Pizzas salgadas",emoji:"🥦",ingredientes:"Molho especial, escarola, brócolis, palmito, azeitonas, milho, alho frito, cebola, tomate, mussarela e orégano.",inteira:54,broto:32.40},
 
-  {id:"p1",numero:1,nome:"Batata Palha",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, batata palha, orégano e azeitonas.",promocional:true,inteira:24.90},
-  {id:"p2",numero:2,nome:"Catupiry",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, orégano e azeitonas.",promocional:true,inteira:24.90},
-  {id:"p3",numero:3,nome:"Calabresa",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, calabresa fatiada, cebola, orégano e azeitonas.",promocional:true,inteira:24.90},
-  {id:"p4",numero:4,nome:"Milho",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, milho, orégano e azeitonas.",promocional:true,inteira:24.90},
+  {id:"p1",numero:1,nome:"Batata Palha",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, batata palha, orégano e azeitonas.",promocional:true,inteira:24.90,foto:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=85"},
+  {id:"p2",numero:2,nome:"Catupiry",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, orégano e azeitonas.",promocional:true,inteira:24.90,foto:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=900&q=85"},
+  {id:"p3",numero:3,nome:"Calabresa",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, calabresa fatiada, cebola, orégano e azeitonas.",promocional:true,inteira:24.90,foto:"https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=85"},
+  {id:"p4",numero:4,nome:"Milho",categoria:"Promoção",emoji:"🔥",ingredientes:"Molho especial, catupiry, milho, orégano e azeitonas.",promocional:true,inteira:24.90,foto:"https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=900&q=85"},
 
   {id:"d1",numero:1,nome:"Banana",categoria:"Pizzas doces",emoji:"🍌",ingredientes:"Leite condensado, banana, mussarela e canela.",inteira:30,broto:18},
   {id:"d2",numero:2,nome:"Chocolate com Morango",categoria:"Pizzas doces",emoji:"🍫",ingredientes:"Chocolate e morango.",inteira:30,broto:18},
@@ -424,8 +428,7 @@ function montarCatalogo(){
     return a.numero-b.numero;
   });
 
-  document.getElementById("result-count").textContent=
-    lista.length+" produto(s) encontrado(s)";
+  document.getElementById("result-count").textContent=lista.length+" produto(s) encontrado(s)";
 
   const container=document.getElementById("catalogo");
   if(!lista.length){
@@ -439,9 +442,18 @@ function montarCatalogo(){
     const idTamanho="size-"+p.id;
     const idOpcao="option-"+p.id;
     const precoId="price-"+p.id;
-    const titulo=p.categoria==="Promoção"?"Promoção":p.categoria==="Bebidas"?"Bebida":p.categoria==="Pizzas doces"?"Pizza doce":"Pizza salgada";
+
     return `
       <article class="flavor-card">
+        ${p.promocional && p.foto ? `
+          <img
+            class="product-photo"
+            src="${p.foto}"
+            alt="Foto ilustrativa da pizza promocional de ${p.nome}"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        ` : ""}
         <div class="flavor-top">
           <div class="flavor-emoji">${p.emoji}</div>
           <div>
