@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Don Luigi Pizzaria | Uma aventura de sabor</title>
-  <meta name="description" content="Peça sua pizza favorita na Don Luigi Pizzaria! Confira nosso cardápio e faça seu pedido pelo WhatsApp.">
+  <meta name="description" content="Peça sua pizza favorita na Don Luigi Pizzaria pelo WhatsApp.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,7 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Nunito', sans-serif;
@@ -39,15 +37,9 @@
       color: var(--dark);
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
+    a { text-decoration: none; color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
 
     .topbar {
       background: var(--dark-green);
@@ -55,11 +47,11 @@
       text-align: center;
       padding: 10px 15px;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     header {
-      background: var(--white);
+      background: white;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -112,14 +104,12 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 25px;
       font-weight: 800;
       font-size: 14px;
     }
 
-    .nav-links a:hover {
-      color: var(--green);
-    }
+    .nav-links a:hover { color: var(--green); }
 
     .btn {
       display: inline-flex;
@@ -189,9 +179,7 @@
       margin-bottom: 20px;
     }
 
-    .hero h1 span {
-      color: var(--yellow);
-    }
+    .hero h1 span { color: var(--yellow); }
 
     .hero p {
       font-size: 18px;
@@ -293,9 +281,7 @@
       margin-bottom: 8px;
     }
 
-    .promo p {
-      line-height: 1.6;
-    }
+    .promo p { line-height: 1.6; }
 
     .promo-price {
       font-size: clamp(32px, 5vw, 45px);
@@ -344,7 +330,7 @@
       color: #647064;
       line-height: 1.6;
       font-size: 14px;
-      min-height: 45px;
+      min-height: 65px;
     }
 
     .flavor-bottom {
@@ -401,6 +387,117 @@
       line-height: 1.6;
     }
 
+    /* CARRINHO */
+    .cart-section {
+      background: white;
+      border-radius: 22px;
+      padding: 28px;
+      border: 2px solid #e6e9df;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 25px 10px;
+      color: #647064;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 15px;
+      align-items: center;
+      padding: 17px 0;
+      border-bottom: 1px solid #e6e9df;
+    }
+
+    .cart-item h4 { font-size: 16px; }
+    .cart-item small { color: #647064; }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: #e8f5ec;
+      color: var(--dark-green);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .cart-item-total {
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .cart-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding-top: 22px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 2px solid #d9e1d9;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 900;
+      color: var(--dark);
+    }
+
+    .customer-form {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label { font-weight: 800; font-size: 14px; }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d8dfd6;
+      border-radius: 10px;
+      background: #fff;
+      outline-color: var(--green);
+    }
+
+    .field textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .full-width { grid-column: 1 / -1; }
+
+    .cart-note {
+      margin-top: 15px;
+      color: #647064;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     footer {
       background: #102c19;
       color: white;
@@ -430,15 +527,23 @@
       box-shadow: 0 5px 20px #0003;
     }
 
-    @media (max-width: 800px) {
-      .nav-links {
-        gap: 12px;
-        font-size: 12px;
-      }
+    .toast {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background: var(--dark-green);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px #0002;
+      z-index: 500;
+      display: none;
+      font-weight: 800;
+    }
 
-      .nav-links .btn {
-        padding: 10px 12px;
-      }
+    @media (max-width: 800px) {
+      .nav-links { gap: 12px; font-size: 12px; }
+      .nav-links .btn { padding: 10px 12px; }
 
       .hero-inner {
         grid-template-columns: 1fr;
@@ -451,72 +556,27 @@
         margin-right: auto;
       }
 
-      .hero-actions {
-        justify-content: center;
-      }
-
-      .hero-art {
-        min-height: 280px;
-      }
-
-      .pizza-circle {
-        width: 250px;
-      }
-
-      .flavors {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .hero-actions { justify-content: center; }
+      .hero-art { min-height: 280px; }
+      .pizza-circle { width: 250px; }
+      .flavors { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 520px) {
-      .topbar {
-        font-size: 11px;
-      }
+      .topbar { font-size: 11px; }
+      .navbar { padding: 13px 16px; min-height: 70px; }
+      .brand-icon { width: 43px; height: 43px; font-size: 23px; }
+      .brand-name { font-size: 19px; }
 
-      .navbar {
-        padding: 13px 16px;
-        min-height: 70px;
-      }
+      .nav-links a:not(.btn) { display: none; }
+      .nav-links .btn { font-size: 12px; padding: 10px 12px; }
 
-      .brand-icon {
-        width: 43px;
-        height: 43px;
-        font-size: 23px;
-      }
-
-      .brand-name {
-        font-size: 19px;
-      }
-
-      .nav-links a:not(.btn) {
-        display: none;
-      }
-
-      .nav-links .btn {
-        font-size: 12px;
-        padding: 10px 12px;
-      }
-
-      .hero-inner {
-        padding: 45px 20px;
-        gap: 15px;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-      }
-
-      .pizza-circle {
-        width: 220px;
-      }
+      .hero-inner { padding: 45px 20px; gap: 15px; }
+      .hero h1 { font-size: 40px; }
+      .hero p { font-size: 16px; }
+      .hero-actions .btn { width: 100%; }
+      .pizza-circle { width: 220px; }
 
       .pixel-tag {
         right: 2px;
@@ -524,9 +584,7 @@
         font-size: 12px;
       }
 
-      .section {
-        padding: 55px 18px;
-      }
+      .section { padding: 55px 18px; }
 
       .promo {
         flex-direction: column;
@@ -534,25 +592,16 @@
         padding: 25px 18px;
       }
 
-      .flavors {
-        grid-template-columns: 1fr;
-      }
-
-      .flavor-card p {
-        min-height: auto;
-      }
-
-      .how-grid {
-        grid-template-columns: 1fr;
-        gap: 5px;
-      }
-
-      .whatsapp-float {
-        width: 54px;
-        height: 54px;
-        right: 15px;
-        bottom: 15px;
-      }
+      .flavors { grid-template-columns: 1fr; }
+      .flavor-card p { min-height: auto; }
+      .cart-section { padding: 18px; }
+      .cart-item { grid-template-columns: 1fr auto; }
+      .cart-item-total { grid-column: 1 / -1; text-align: right; }
+      .cart-summary { font-size: 19px; }
+      .customer-form { grid-template-columns: 1fr; }
+      .full-width { grid-column: auto; }
+      .cart-actions .btn { width: 100%; }
+      .whatsapp-float { width: 54px; height: 54px; right: 15px; bottom: 15px; }
     }
   </style>
 </head>
@@ -586,7 +635,6 @@
       <div class="hero-inner">
         <div class="hero-copy">
           <span class="eyebrow">⭐ Uma fase cheia de sabor</span>
-
           <h1>A próxima fase da sua fome é <span>uma pizza!</span></h1>
 
           <p>
@@ -595,14 +643,12 @@
           </p>
 
           <div class="hero-actions">
-            <a href="#destaques" class="btn btn-green"
+            <a href="#destaques" class="btn"
                style="background:var(--yellow);color:var(--dark);box-shadow:0 5px 0 #b18a17">
               🍕 Ver cardápio
             </a>
 
-            <a href="#promocao" class="btn btn-red">
-              🔥 Ver promoção
-            </a>
+            <a href="#promocao" class="btn btn-red">🔥 Ver promoção</a>
           </div>
         </div>
 
@@ -631,7 +677,7 @@
       <div class="section-heading">
         <span class="mini">Escolha sua próxima fase</span>
         <h2>As favoritas da galera 🍕</h2>
-        <p>Uma prévia do nosso cardápio. Em breve, todos os sabores!</p>
+        <p>Escolha suas pizzas e adicione ao carrinho.</p>
       </div>
 
       <div class="flavors">
@@ -644,23 +690,17 @@
           </p>
           <div class="flavor-bottom">
             <span class="price">R$ 52,00</span>
-            <button class="small-btn" onclick="pedir('Don Luigi')">
-              Escolher
-            </button>
+            <button class="small-btn" onclick="adicionar('Don Luigi')">+ Adicionar</button>
           </div>
         </article>
 
         <article class="flavor-card">
           <div class="flavor-emoji">🍄</div>
           <h3>15 - Champignon</h3>
-          <p>
-            Molho especial, mussarela, champignon, orégano e azeitonas.
-          </p>
+          <p>Molho especial, mussarela, champignon, orégano e azeitonas.</p>
           <div class="flavor-bottom">
             <span class="price">R$ 42,00</span>
-            <button class="small-btn" onclick="pedir('Champignon')">
-              Escolher
-            </button>
+            <button class="small-btn" onclick="adicionar('Champignon')">+ Adicionar</button>
           </div>
         </article>
 
@@ -673,17 +713,93 @@
           </p>
           <div class="flavor-bottom">
             <span class="price">R$ 42,00</span>
-            <button class="small-btn" onclick="pedir('Calabresa')">
-              Escolher
-            </button>
+            <button class="small-btn" onclick="adicionar('Calabresa')">+ Adicionar</button>
           </div>
         </article>
       </div>
 
       <div class="menu-cta">
-        <button class="btn btn-green" onclick="pedir('Cardápio completo')">
-          🍕 Quero ver o cardápio completo
+        <button class="btn btn-green" onclick="irParaCarrinho()">
+          🛒 Ver meu carrinho
         </button>
+      </div>
+    </section>
+
+    <section class="section" id="carrinho">
+      <div class="section-heading">
+        <span class="mini">Seu pedido</span>
+        <h2>🛒 Meu carrinho</h2>
+        <p>Confira os itens antes de enviar para a pizzaria.</p>
+      </div>
+
+      <div class="cart-section">
+        <div id="cart-items">
+          <div class="cart-empty">
+            🍕 Seu carrinho está vazio. Escolha uma pizza para começar!
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <span>Subtotal</span>
+          <span id="cart-total">R$ 0,00</span>
+        </div>
+
+        <form id="checkout-form">
+          <div class="customer-form">
+            <div class="field">
+              <label for="nome">Seu nome *</label>
+              <input id="nome" name="nome" autocomplete="name" required placeholder="Digite seu nome">
+            </div>
+
+            <div class="field">
+              <label for="telefone">Seu telefone</label>
+              <input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(15) 99999-9999">
+            </div>
+
+            <div class="field">
+              <label for="entrega">Tipo de pedido *</label>
+              <select id="entrega" name="entrega" required>
+                <option value="Entrega">Entrega</option>
+                <option value="Retirada no local">Retirada no local</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="pagamento">Forma de pagamento *</label>
+              <select id="pagamento" name="pagamento" required>
+                <option value="">Selecione</option>
+                <option>Pix</option>
+                <option>Dinheiro</option>
+                <option>Cartão de crédito</option>
+                <option>Cartão de débito</option>
+              </select>
+            </div>
+
+            <div class="field full-width" id="address-field">
+              <label for="endereco">Endereço de entrega *</label>
+              <input id="endereco" name="endereco" autocomplete="street-address" placeholder="Rua, número, bairro e complemento">
+            </div>
+
+            <div class="field full-width">
+              <label for="observacoes">Observações do pedido</label>
+              <textarea id="observacoes" name="observacoes" placeholder="Ex.: tirar cebola, entregar na portaria..."></textarea>
+            </div>
+          </div>
+
+          <p class="cart-note">
+            O pedido será enviado pelo WhatsApp. A pizzaria confirmará a
+            disponibilidade, a taxa de entrega e o valor final.
+          </p>
+
+          <div class="cart-actions">
+            <button type="submit" class="btn btn-green">
+              📲 Finalizar pedido no WhatsApp
+            </button>
+            <button type="button" class="btn-outline" onclick="limparCarrinho()">
+              Esvaziar carrinho
+            </button>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -704,13 +820,13 @@
         <div class="how-card">
           <div class="how-icon">🛒</div>
           <h3>2. Monte seu pedido</h3>
-          <p>Escolha os produtos e confira os valores.</p>
+          <p>Adicione as pizzas, ajuste as quantidades e preencha seus dados.</p>
         </div>
 
         <div class="how-card">
           <div class="how-icon">📲</div>
           <h3>3. Envie pelo WhatsApp</h3>
-          <p>Finalize seu pedido diretamente com a nossa equipe.</p>
+          <p>Confira a mensagem e envie o pedido para nossa equipe.</p>
         </div>
       </div>
     </section>
@@ -723,23 +839,230 @@
   </footer>
 
   <a class="whatsapp-float"
-     href="#destaques"
-     aria-label="Fazer pedido"
-     title="Fazer pedido">🛒</a>
+     href="#carrinho"
+     aria-label="Abrir carrinho"
+     title="Abrir carrinho"
+     onclick="irParaCarrinho(); return false;">🛒</a>
+
+  <div class="toast" id="toast" role="status"></div>
 
   <script>
-    // O cardápio completo e o carrinho serão adicionados na próxima etapa.
-    // Depois configuraremos o número oficial do WhatsApp da pizzaria.
+    // Número do WhatsApp da pizzaria, com código do Brasil e DDD.
+    const WHATSAPP = "5515981689760";
 
-    document.getElementById("ano").textContent = new Date().getFullYear();
+    const produtos = {
+      "Don Luigi": {
+        nome: "17 - Don Luigi",
+        preco: 52.00
+      },
+      "Champignon": {
+        nome: "15 - Champignon",
+        preco: 42.00
+      },
+      "Calabresa": {
+        nome: "12 - Calabresa",
+        preco: 42.00
+      }
+    };
 
-    function pedir(produto) {
-      alert(
-        "Você escolheu: " + produto +
-        "\n\nNa próxima etapa vamos ativar o cardápio completo, " +
-        "o carrinho e os pedidos pelo WhatsApp."
-      );
+    const carrinho = {};
+
+    document.getElementById("ano").textContent =
+      new Date().getFullYear();
+
+    function dinheiro(valor) {
+      return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
     }
+
+    function mostrarAviso(texto) {
+      const toast = document.getElementById("toast");
+      toast.textContent = texto;
+      toast.style.display = "block";
+
+      clearTimeout(mostrarAviso.timer);
+      mostrarAviso.timer = setTimeout(() => {
+        toast.style.display = "none";
+      }, 2500);
+    }
+
+    function adicionar(id) {
+      if (!produtos[id]) return;
+
+      carrinho[id] = (carrinho[id] || 0) + 1;
+      atualizarCarrinho();
+      mostrarAviso(produtos[id].nome + " adicionada ao carrinho!");
+    }
+
+    function alterarQuantidade(id, alteracao) {
+      if (!carrinho[id]) return;
+
+      carrinho[id] += alteracao;
+
+      if (carrinho[id] <= 0) {
+        delete carrinho[id];
+      }
+
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const container = document.getElementById("cart-items");
+      const totalElemento = document.getElementById("cart-total");
+      const ids = Object.keys(carrinho);
+
+      if (ids.length === 0) {
+        container.innerHTML =
+          '<div class="cart-empty">🍕 Seu carrinho está vazio. Escolha uma pizza para começar!</div>';
+
+        totalElemento.textContent = dinheiro(0);
+        return;
+      }
+
+      let total = 0;
+
+      container.innerHTML = ids.map(id => {
+        const produto = produtos[id];
+        const quantidade = carrinho[id];
+        const subtotal = produto.preco * quantidade;
+
+        total += subtotal;
+
+        return `
+          <div class="cart-item">
+            <div>
+              <h4>${produto.nome}</h4>
+              <small>${dinheiro(produto.preco)} cada</small>
+            </div>
+
+            <div class="quantity">
+              <button type="button"
+                aria-label="Diminuir ${produto.nome}"
+                onclick="alterarQuantidade('${id}', -1)">−</button>
+
+              <strong>${quantidade}</strong>
+
+              <button type="button"
+                aria-label="Aumentar ${produto.nome}"
+                onclick="alterarQuantidade('${id}', 1)">+</button>
+            </div>
+
+            <div class="cart-item-total">${dinheiro(subtotal)}</div>
+          </div>
+        `;
+      }).join("");
+
+      totalElemento.textContent = dinheiro(total);
+    }
+
+    function limparCarrinho() {
+      for (const id of Object.keys(carrinho)) {
+        delete carrinho[id];
+      }
+
+      atualizarCarrinho();
+      mostrarAviso("Carrinho esvaziado.");
+    }
+
+    function irParaCarrinho() {
+      document.getElementById("carrinho").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    const entrega = document.getElementById("entrega");
+    const endereco = document.getElementById("endereco");
+    const campoEndereco = document.getElementById("address-field");
+
+    function atualizarEndereco() {
+      const precisaEndereco = entrega.value === "Entrega";
+
+      endereco.required = precisaEndereco;
+      campoEndereco.style.display = precisaEndereco ? "flex" : "none";
+    }
+
+    entrega.addEventListener("change", atualizarEndereco);
+    atualizarEndereco();
+
+    document.getElementById("checkout-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      if (Object.keys(carrinho).length === 0) {
+        alert("Seu carrinho está vazio! Escolha uma pizza antes de finalizar.");
+        irParaCarrinho();
+        return;
+      }
+
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const tipoEntrega = entrega.value;
+      const pagamento = document.getElementById("pagamento").value;
+      const enderecoTexto = endereco.value.trim();
+      const observacoes = document.getElementById("observacoes").value.trim();
+
+      if (!nome || !pagamento) {
+        alert("Preencha seu nome e a forma de pagamento.");
+        return;
+      }
+
+      if (tipoEntrega === "Entrega" && !enderecoTexto) {
+        alert("Informe o endereço de entrega.");
+        endereco.focus();
+        return;
+      }
+
+      let total = 0;
+      const linhas = [];
+
+      for (const id of Object.keys(carrinho)) {
+        const produto = produtos[id];
+        const quantidade = carrinho[id];
+        const subtotal = produto.preco * quantidade;
+
+        total += subtotal;
+        linhas.push(
+          `${quantidade}x ${produto.nome} — ${dinheiro(subtotal)}`
+        );
+      }
+
+      let mensagem =
+        "🍕 *NOVO PEDIDO - DON LUIGI PIZZARIA*\n\n" +
+        "*Cliente:* " + nome + "\n";
+
+      if (telefone) {
+        mensagem += "*Telefone:* " + telefone + "\n";
+      }
+
+      mensagem +=
+        "*Tipo:* " + tipoEntrega + "\n" +
+        "*Pagamento:* " + pagamento + "\n\n" +
+        "*ITENS DO PEDIDO*\n" +
+        linhas.join("\n") + "\n\n" +
+        "*Subtotal dos produtos: " + dinheiro(total) + "*\n";
+
+      if (tipoEntrega === "Entrega") {
+        mensagem +=
+          "*Endereço:* " + enderecoTexto + "\n" +
+          "*Entrega:* confirmar taxa com a pizzaria\n";
+      }
+
+      if (observacoes) {
+        mensagem += "\n*Observações:* " + observacoes + "\n";
+      }
+
+      mensagem +=
+        "\nPor favor, confirmem a disponibilidade, a taxa de entrega e o valor final do pedido.";
+
+      const link =
+        "https://wa.me/" + WHATSAPP +
+        "?text=" + encodeURIComponent(mensagem);
+
+      window.open(link, "_blank", "noopener,noreferrer");
+    });
+
+    atualizarCarrinho();
   </script>
 </body>
 </html>
