@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Don Luigi Pizzaria | Uma aventura de sabor</title>
+  <meta name="description" content="Peça sua pizza favorita na Don Luigi Pizzaria! Confira nosso cardápio e faça seu pedido pelo WhatsApp.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #168b45;
+      --dark-green: #07572b;
+      --red: #e73535;
+      --yellow: #ffca3a;
+      --cream: #fff9eb;
+      --dark: #17251a;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .topbar {
+      background: var(--dark-green);
+      color: white;
+      text-align: center;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    header {
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 15px #00000012;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      min-height: 82px;
+      margin: auto;
+      padding: 15px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      background: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 29px;
+      border: 3px solid var(--dark-green);
+    }
+
+    .brand-name {
+      font-weight: 900;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--dark-green);
+    }
+
+    .brand-name span {
+      display: block;
+      color: var(--red);
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-top: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: white;
+      box-shadow: 0 5px 0 var(--dark-green);
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: white;
+      box-shadow: 0 5px 0 #a91f25;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at 85% 25%, #ffca3a25 0 12%, transparent 12.5%),
+        radial-gradient(circle at 10% 90%, #ffffff10 0 15%, transparent 15.5%),
+        linear-gradient(125deg, #07572b, #168b45 65%, #0a6835);
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      min-height: 520px;
+      padding: 65px 24px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--dark);
+      background: var(--yellow);
+      padding: 8px 13px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 65px);
+      line-height: 1.05;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: var(--yellow);
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 510px;
+      color: #e4f5e8;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .hero-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 330px;
+    }
+
+    .pizza-circle {
+      width: min(100%, 360px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #ffffff12;
+      border: 2px dashed #ffca3a99;
+      box-shadow: 0 0 0 18px #ffffff08;
+      font-size: clamp(130px, 18vw, 205px);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .pixel-tag {
+      position: absolute;
+      bottom: 20px;
+      right: 0;
+      background: var(--yellow);
+      color: var(--dark);
+      border: 4px solid var(--dark);
+      padding: 13px 16px;
+      font-weight: 900;
+      border-radius: 10px;
+      transform: rotate(-5deg);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 75px 24px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .section-heading .mini {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(27px, 4vw, 39px);
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .section-heading p {
+      color: #667367;
+      margin-top: 8px;
+    }
+
+    .promo {
+      background: var(--yellow);
+      border: 3px solid var(--dark);
+      border-radius: 22px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      box-shadow: 0 7px 0 var(--dark);
+    }
+
+    .promo h3 {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .promo p {
+      line-height: 1.6;
+    }
+
+    .promo-price {
+      font-size: clamp(32px, 5vw, 45px);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .promo-price small {
+      display: block;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .flavors {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .flavor-card {
+      background: white;
+      border: 2px solid #e6e9df;
+      border-radius: 18px;
+      padding: 24px;
+      transition: .2s;
+    }
+
+    .flavor-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--green);
+      box-shadow: 0 10px 25px #0000000d;
+    }
+
+    .flavor-emoji {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .flavor-card h3 {
+      font-size: 21px;
+      margin-bottom: 7px;
+      font-weight: 900;
+    }
+
+    .flavor-card p {
+      color: #647064;
+      line-height: 1.6;
+      font-size: 14px;
+      min-height: 45px;
+    }
+
+    .flavor-bottom {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .price {
+      font-size: 22px;
+      color: var(--dark-green);
+      font-weight: 900;
+    }
+
+    .small-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 13px;
+      background: var(--green);
+      color: white;
+      font-weight: 900;
+    }
+
+    .menu-cta {
+      text-align: center;
+      margin-top: 35px;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .how-card {
+      text-align: center;
+      padding: 25px;
+    }
+
+    .how-icon {
+      font-size: 42px;
+      margin-bottom: 14px;
+    }
+
+    .how-card h3 {
+      margin-bottom: 8px;
+      font-weight: 900;
+    }
+
+    .how-card p {
+      color: #647064;
+      line-height: 1.6;
+    }
+
+    footer {
+      background: #102c19;
+      color: white;
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    footer p {
+      color: #c9d8cb;
+      margin-top: 9px;
+      font-size: 14px;
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 200;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #25d366;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 29px;
+      box-shadow: 0 5px 20px #0003;
+    }
+
+    @media (max-width: 800px) {
+      .nav-links {
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .nav-links .btn {
+        padding: 10px 12px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 50px;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-art {
+        min-height: 280px;
+      }
+
+      .pizza-circle {
+        width: 250px;
+      }
+
+      .flavors {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .topbar {
+        font-size: 11px;
+      }
+
+      .navbar {
+        padding: 13px 16px;
+        min-height: 70px;
+      }
+
+      .brand-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 23px;
+      }
+
+      .brand-name {
+        font-size: 19px;
+      }
+
+      .nav-links a:not(.btn) {
+        display: none;
+      }
+
+      .nav-links .btn {
+        font-size: 12px;
+        padding: 10px 12px;
+      }
+
+      .hero-inner {
+        padding: 45px 20px;
+        gap: 15px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .pizza-circle {
+        width: 220px;
+      }
+
+      .pixel-tag {
+        right: 2px;
+        bottom: 5px;
+        font-size: 12px;
+      }
+
+      .section {
+        padding: 55px 18px;
+      }
+
+      .promo {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 18px;
+      }
+
+      .flavors {
+        grid-template-columns: 1fr;
+      }
+
+      .flavor-card p {
+        min-height: auto;
+      }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .whatsapp-float {
+        width: 54px;
+        height: 54px;
+        right: 15px;
+        bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    🍕 PREPARE-SE PARA UMA AVENTURA DE SABOR!
+  </div>
+
+  <header>
+    <nav class="navbar">
+      <a href="#" class="brand">
+        <div class="brand-icon">🍄</div>
+        <div class="brand-name">
+          DON LUIGI
+          <span>PIZZARIA</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="#promocao">Promoção</a>
+        <a href="#destaques">Cardápio</a>
+        <a href="#como-pedir">Como pedir</a>
+        <a href="#destaques" class="btn btn-green">🍕 Pedir agora</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">⭐ Uma fase cheia de sabor</span>
+
+          <h1>A próxima fase da sua fome é <span>uma pizza!</span></h1>
+
+          <p>
+            Sabores incríveis, ingredientes caprichados e aquela pizza
+            que merece virar sua próxima aventura. Escolha a sua favorita!
+          </p>
+
+          <div class="hero-actions">
+            <a href="#destaques" class="btn btn-green"
+               style="background:var(--yellow);color:var(--dark);box-shadow:0 5px 0 #b18a17">
+              🍕 Ver cardápio
+            </a>
+
+            <a href="#promocao" class="btn btn-red">
+              🔥 Ver promoção
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="pizza-circle">🍕</div>
+          <div class="pixel-tag">POWER-UP DE SABOR!</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="promocao">
+      <div class="promo">
+        <div>
+          <h3>⭐ Promoção especial Don Luigi!</h3>
+          <p>Confira nossas opções promocionais e escolha sua favorita.</p>
+        </div>
+
+        <div class="promo-price">
+          R$ 24,90
+          <small>Consulte as opções</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="destaques">
+      <div class="section-heading">
+        <span class="mini">Escolha sua próxima fase</span>
+        <h2>As favoritas da galera 🍕</h2>
+        <p>Uma prévia do nosso cardápio. Em breve, todos os sabores!</p>
+      </div>
+
+      <div class="flavors">
+        <article class="flavor-card">
+          <div class="flavor-emoji">🍕</div>
+          <h3>17 - Don Luigi</h3>
+          <p>
+            Molho especial, mussarela, champignon, bacon,
+            calabresa fatiada, tomate, cebola, catupiry e orégano.
+          </p>
+          <div class="flavor-bottom">
+            <span class="price">R$ 52,00</span>
+            <button class="small-btn" onclick="pedir('Don Luigi')">
+              Escolher
+            </button>
+          </div>
+        </article>
+
+        <article class="flavor-card">
+          <div class="flavor-emoji">🍄</div>
+          <h3>15 - Champignon</h3>
+          <p>
+            Molho especial, mussarela, champignon, orégano e azeitonas.
+          </p>
+          <div class="flavor-bottom">
+            <span class="price">R$ 42,00</span>
+            <button class="small-btn" onclick="pedir('Champignon')">
+              Escolher
+            </button>
+          </div>
+        </article>
+
+        <article class="flavor-card">
+          <div class="flavor-emoji">🔥</div>
+          <h3>12 - Calabresa</h3>
+          <p>
+            Molho especial, mussarela, calabresa, cebola, catupiry,
+            orégano e azeitonas.
+          </p>
+          <div class="flavor-bottom">
+            <span class="price">R$ 42,00</span>
+            <button class="small-btn" onclick="pedir('Calabresa')">
+              Escolher
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="menu-cta">
+        <button class="btn btn-green" onclick="pedir('Cardápio completo')">
+          🍕 Quero ver o cardápio completo
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="como-pedir">
+      <div class="section-heading">
+        <span class="mini">Simples e rápido</span>
+        <h2>Como fazer seu pedido?</h2>
+        <p>Sua pizza favorita está a poucos passos de distância.</p>
+      </div>
+
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-icon">🍕</div>
+          <h3>1. Escolha sua pizza</h3>
+          <p>Confira os sabores e encontre sua combinação favorita.</p>
+        </div>
+
+        <div class="how-card">
+          <div class="how-icon">🛒</div>
+          <h3>2. Monte seu pedido</h3>
+          <p>Escolha os produtos e confira os valores.</p>
+        </div>
+
+        <div class="how-card">
+          <div class="how-icon">📲</div>
+          <h3>3. Envie pelo WhatsApp</h3>
+          <p>Finalize seu pedido diretamente com a nossa equipe.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <h2>🍕 DON LUIGI PIZZARIA</h2>
+    <p>Uma aventura de sabor em cada fatia!</p>
+    <p>© <span id="ano"></span> Don Luigi Pizzaria. Todos os direitos reservados.</p>
+  </footer>
+
+  <a class="whatsapp-float"
+     href="#destaques"
+     aria-label="Fazer pedido"
+     title="Fazer pedido">🛒</a>
+
+  <script>
+    // O cardápio completo e o carrinho serão adicionados na próxima etapa.
+    // Depois configuraremos o número oficial do WhatsApp da pizzaria.
+
+    document.getElementById("ano").textContent = new Date().getFullYear();
+
+    function pedir(produto) {
+      alert(
+        "Você escolheu: " + produto +
+        "\n\nNa próxima etapa vamos ativar o cardápio completo, " +
+        "o carrinho e os pedidos pelo WhatsApp."
+      );
+    }
+  </script>
+</body>
+</html>
